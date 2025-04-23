@@ -35,6 +35,7 @@ async function run() {
         // Connect the client to the server	(optional starting in v4.7)
         // await client.connect();
         const foodItemsCollection = client.db('restuarantDB').collection('foodItems')
+        const foodPurchasingCollection = client.db('restuarantDB').collection('foodPurchasingData')
 
         app.post('/foodItems',async(req,res)=>{
             const foodItem = req.body
@@ -52,6 +53,12 @@ async function run() {
                 _id:new ObjectId(id)
             } 
             const result = await foodItemsCollection.findOne(query)
+            res.send(result)
+        })
+
+        app.post('/purchasingSingleFoodByUser',async(req,res)=>{
+            const purchasingInfo = req.body
+            const result = await foodPurchasingCollection.insertOne(purchasingInfo)
             res.send(result)
         })
 
