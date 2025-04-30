@@ -93,7 +93,11 @@ async function run() {
         })
 
         app.get('/foodItems', async (req, res) => {
-            const result = await foodItemsCollection.find().toArray()
+            const page = parseInt(req.query.page) 
+            const size = parseInt(req.query.size) 
+            console.log(page,size);
+            
+            const result = await foodItemsCollection.find().skip(page*size).limit(size).toArray()
             res.send(result)
         })
         app.get('/foodItems/:id', async (req, res) => {
