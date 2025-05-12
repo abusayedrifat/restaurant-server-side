@@ -4,7 +4,7 @@ const cors = require('cors')
 const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser')
 const corsOption = {
-    origin: ['http://localhost:5000', 'http://localhost:5173'],
+    origin: ['https://restaurant-server-side-sigma.vercel.app/', 'https://resturant-client-side-7ddd9.web.app/'],
     credentials: true
 }
 const app = express()
