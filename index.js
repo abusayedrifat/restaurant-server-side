@@ -39,7 +39,7 @@ const client = new MongoClient(uri, {
 //middleware
 
 const verifyToken = async (req, res, next) => {
-    const token = req.cookies ?.accessToken
+    const token = req.cookies?.accessToken
     console.log('ur token is:', token);
 
     if (!token) {
@@ -76,7 +76,7 @@ async function run() {
             })
 
             res
-            .cookie('accessToken', token, {
+                .cookie('accessToken', token, {
                     httpOnly: true,
                     secure: false,
                     sameSite: 'lax'
@@ -93,11 +93,11 @@ async function run() {
         })
 
         app.get('/foodItems', async (req, res) => {
-            const page = parseInt(req.query.page) 
-            const size = parseInt(req.query.size) 
-            console.log(page,size);
-            
-            const result = await foodItemsCollection.find().skip(page*size).limit(size).toArray()
+            const page = parseInt(req.query.page)
+            const size = parseInt(req.query.size)
+            console.log(page, size);
+
+            const result = await foodItemsCollection.find().skip(page * size).limit(size).toArray()
             res.send(result)
         })
         app.get('/foodItems/:id', async (req, res) => {
@@ -118,27 +118,29 @@ async function run() {
 
 
         //user orders
-        app.get('/purchasingSingleFoodByUser', verifyToken,async(req,res)=>{
+        app.get('/purchasingSingleFoodByUser', verifyToken, async (req, res) => {
 
             console.log(req.user.email);
-            
+
             if (req.query.email !== req.user.email) {
-                return res.status(401).send({message:'forbidden access'})
+                return res.status(401).send({
+                    message: 'forbidden access'
+                })
             }
-            let query ={}
+            let query = {}
             if (req.query?.email) {
-                query ={
-                    email:req.query.email
+                query = {
+                    email: req.query.email
                 }
             }
             const result = await foodPurchasingCollection.find(query).toArray()
             res.send(result)
         })
 
-        app.delete('/purchasingSingleFoodByUser/:id',async(req,res)=>{
+        app.delete('/purchasingSingleFoodByUser/:id', async (req, res) => {
             const deleteId = req.params.id
             const query = {
-                _id: new ObjectId(deleteId) 
+                _id: new ObjectId(deleteId) //Constructor functions in JavaScript are used to create and initialize new objects. for more details see on 167th lines
             }
             const result = await foodPurchasingCollection.deleteOne(query)
             res.send(result)
@@ -163,3 +165,24 @@ app.listen(port, () => {
     console.log('port is running', port);
 
 })
+
+// {
+//     Constructor functions in JavaScript are used to create and initialize new objects. They act as blueprints for creating instances of a specific type, defining their structure and behavior. They are particularly useful when you need to create multiple objects with similar properties and methods, as they provide a convenient way to manage the creation process. 
+
+// Key Uses of Constructor Functions:
+
+// ( Object Creation:)
+// The primary purpose is to create new objects. When used with the new keyword, they initialize a new object and set its initial state. 
+
+// (Property and Method Initialization:)
+// Constructors define the properties and methods that will be associated with the newly created object. 
+
+// (Code Organization:)
+// They help organize code by grouping together data and behaviors related to specific types of objects. 
+
+// (Reusability:)
+// Constructor functions are reusable. You can create multiple instances of an object by calling the constructor function with different arguments, says a post on Medium. 
+
+// (Inheritance (in older JavaScript):)
+// While modern JavaScript classes use the class keyword, constructor functions were used to implement inheritance before the class syntax, explains a post on 
+// }
