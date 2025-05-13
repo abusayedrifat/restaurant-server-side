@@ -3,11 +3,11 @@ const express = require('express')
 const cors = require('cors')
 const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser')
+const app = express()
 const corsOption = {
-    origin: ['https://restaurant-server-side-sigma.vercel.app/', 'https://resturant-client-side-7ddd9.web.app/'],
+    origin: [ 'https://resturant-client-side-7ddd9.web.app','https://restaurant-server-side-sigma.vercel.app'],
     credentials: true
 }
-const app = express()
 const port = process.env.PORT || 5000
 
 app.use(express.json())
@@ -78,8 +78,8 @@ async function run() {
             res
                 .cookie('accessToken', token, {
                     httpOnly: true,
-                    secure: false,
-                    sameSite: 'lax'
+                    secure: true,
+                    sameSite: 'none'
                 })
                 .send({
                     success: true
